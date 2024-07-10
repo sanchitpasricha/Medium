@@ -8,23 +8,39 @@ export async function userSignup(c: Context) {
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
-  const body = await c.req.json();
+  const { email, password } = await c.req.json();
   try {
     const user = await prisma.user.create({
       data: {
-        email: body.email,
-        password: body.password,
+        email: email,
+        password: password,
       },
     });
+
     const token = await sign({ userId: user.id }, c.env.SECRET);
     return c.json({ token });
   } catch (e) {
     return c.status(403);
   }
-
-  return c.json({ body });
 }
 
 export async function userSignin(c: Context) {
-  return c.json({ message: "User Signup Endpoint" });
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  const { email, password } = await c.req.json();
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email: email, password: password },
+    });
+    if (user) {
+      const jwt = await sign({ userId: user.id }, c.env.SECRET);
+      return c.json({ token: jwt });
+    } else {
+      return c.status(403);
+    }
+  } catch (e) {
+    console.log(e);
+  }
 }
