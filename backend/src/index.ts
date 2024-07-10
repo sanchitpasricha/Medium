@@ -2,7 +2,11 @@ import { Hono } from "hono";
 import { userSignin, userSignup } from "./controllers/userController";
 import { displayBlogs, findBlog, postBlog } from "./controllers/blogController";
 
-const app = new Hono().basePath("/api/v1");
+const app = new Hono<{
+  Bindings: {
+    DATABASE_URL: string;
+  };
+}>().basePath("/api/v1");
 
 app.post("/user/signup", userSignup);
 app.post("/user/signin", userSignin);
