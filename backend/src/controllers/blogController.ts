@@ -22,13 +22,45 @@ export async function postBlog(c: Context) {
 }
 
 export async function editBlog(c: Context) {
-  return c.json({ message: "Edit an existing blog post" });
+  const userId = c.get("userId");
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  const body = await c.req.json();
+  prisma.post.update({
+    where: {
+      id: body.id,
+      authorId: userId,
+    },
+    data: {
+      title: body.title,
+      content: body.content,
+    },
+  });
+
+  return c.text("updated post");
 }
 
 export async function findBlog(c: Context) {
-  return c.json({ message: "Find a blog post by ID" });
+  const id = c.req.param("id");
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  const post = await prisma.post.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  return c.json(post);
 }
 
 export async function displayBlogs(c: Context) {
-  return c.json({ message: "Display all blogs" });
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+  const blogs = await prisma.post.findMany();
+  return c.json({ blogs: blogs });
 }
