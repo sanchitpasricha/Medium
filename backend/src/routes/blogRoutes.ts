@@ -15,7 +15,6 @@ export const blogRouter = new Hono<{
 }>();
 
 async function authMiddleware(c: any, next: any) {
-  console.log("auth middleware");
   const token = c.req.header("Authorization")?.split(" ")[1];
   if (!token) {
     return c.json({ message: "Unauthorized" });
@@ -26,11 +25,11 @@ async function authMiddleware(c: any, next: any) {
   }
   c.set("userId", payload.userId);
 
-  next();
+  await next();
 }
 blogRouter.get("/bulk", displayBlogs);
 
-blogRouter.use("*", authMiddleware);
+blogRouter.use("/*", authMiddleware);
 
 blogRouter.post("/", postBlog).put(editBlog);
 blogRouter.get("/:id", findBlog);
