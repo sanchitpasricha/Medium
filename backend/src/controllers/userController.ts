@@ -1,19 +1,26 @@
 import { Context } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
-import { decode, sign, verify } from "hono/jwt";
+import { sign } from "hono/jwt";
+import { signupInput, signinInput } from "@sanchitpasricha/validcheck-common";
 
 export async function userSignup(c: Context) {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
-  const { email, password } = await c.req.json();
+  const body = await c.req.json();
+  const { success } = signupInput.safeParse(body);
+  if (!success) {
+    c.status(403);
+    return c.json({ message: "Invalid input" });
+  }
   try {
     const user = await prisma.user.create({
       data: {
-        email: email,
-        password: password,
+        email: body.email,
+        password: body.password,
+        name: body.name,
       },
     });
 
@@ -29,10 +36,15 @@ export async function userSignin(c: Context) {
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
-  const { email, password } = await c.req.json();
+  const body = await c.req.json();
+  const { success } = signinInput.safeParse(body);
+  if (!success) {
+    c.status(403);
+    return c.json({ message: "Invalid input" });
+  }
   try {
     const user = await prisma.user.findUnique({
-      where: { email: email, password: password },
+      where: { email: body.email, password: body.password },
     });
     if (user) {
       const jwt = await sign({ userId: user.id }, c.env.SECRET);

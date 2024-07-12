@@ -1,6 +1,7 @@
 import { Context } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
+import { blogInput, updateBlogInput } from "@sanchitpasricha/validcheck-common";
 
 export async function postBlog(c: Context) {
   const userId = await c.get("userId");
@@ -9,6 +10,11 @@ export async function postBlog(c: Context) {
   }).$extends(withAccelerate());
 
   const body = await c.req.json();
+  const { success } = blogInput.safeParse(body);
+  if (!success) {
+    c.status(403);
+    return c.json({ message: "Invalid input" });
+  }
   const post = prisma.post.create({
     data: {
       title: body.title,
@@ -28,6 +34,11 @@ export async function editBlog(c: Context) {
   }).$extends(withAccelerate());
 
   const body = await c.req.json();
+  const { success } = updateBlogInput.safeParse(body);
+  if (!success) {
+    c.status(403);
+    return c.json({ message: "Invalid input" });
+  }
   prisma.post.update({
     where: {
       id: body.id,
