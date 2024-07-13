@@ -3,5 +3,6 @@ export interface Blog {
   title: string;
   content: string;
   published: boolean;
+  author: string;
   authorId: string;
 }
