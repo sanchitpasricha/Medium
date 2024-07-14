@@ -20,15 +20,15 @@ function SignupPage() {
   }, []);
 
   return (
-    <div className="w-full h-screen grid grid-cols-2">
+    <div className="w-full h-screen grid grid-cols-1 md:grid-cols-2">
       <div>
         <SignupForm />
       </div>
-      <div className="bg-gray-200 flex flex-col justify-center px-24 ">
+      <div className="hidden md:flex bg-gray-200 flex-col justify-center px-6 md:px-24">
         {quote ? (
           <>
-            <h1 className="font-bold text-3xl">"{quote.quote}"</h1>
-            <h2 className="font-semibold py-4">-{quote.author}</h2>
+            <h1 className="font-bold text-2xl md:text-3xl">"{quote.quote}"</h1>
+            <h2 className="font-semibold py-2 md:py-4">-{quote.author}</h2>
           </>
         ) : (
           <p></p>

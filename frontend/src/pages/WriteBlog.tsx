@@ -38,13 +38,13 @@ function WriteBlog() {
   }
 
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-2xl bg-white rounded shadow-md p-8">
-        <div className="mb-6">
+    <div className="h-screen flex items-center justify-center bg-gray-100 px-4">
+      <div className="w-full max-w-2xl bg-white rounded shadow-md p-4 md:p-8">
+        <div className="mb-4 md:mb-6">
           <input
             type="text"
             placeholder="Title"
-            className="w-full text-3xl font-serif text-gray-600 placeholder-gray-400 outline-none"
+            className="w-full text-2xl md:text-3xl font-serif text-gray-600 placeholder-gray-400 outline-none"
             onChange={(e) => {
               setTitle(e.target.value);
             }}
@@ -54,17 +54,17 @@ function WriteBlog() {
         <div>
           <textarea
             placeholder="Tell your story..."
-            className="w-full h-64 text-lg font-serif text-gray-600 placeholder-gray-400 outline-none resize-none"
+            className="w-full h-48 md:h-64 text-base md:text-lg font-serif text-gray-600 placeholder-gray-400 outline-none resize-none"
             onChange={(e) => {
               setContent(e.target.value);
             }}
             value={content}
           ></textarea>
         </div>
-        <div className="mt-6 flex justify-end">
+        <div className="mt-4 md:mt-6 flex justify-end">
           <button
             onClick={PostBlog}
-            className="px-6 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition duration-300"
+            className="px-4 md:px-6 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition duration-300"
           >
             Post
           </button>

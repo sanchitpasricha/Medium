@@ -13,7 +13,7 @@ function MainArea() {
       });
   }, []);
   return (
-    <div className="h-screen px-40 py-16">
+    <div className="h-screen px-4 py-4 md:px-20 md:py-8 lg:px-40 lg:py-16">
       {blogs.map((blog) => (
         <BlogPost key={blog.id} blog={blog} />
       ))}
