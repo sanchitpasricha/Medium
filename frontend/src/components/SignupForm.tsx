@@ -1,10 +1,14 @@
 import { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function SignupForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
 
   async function SubmitForm() {
     const response = await axios.post(
@@ -18,6 +22,10 @@ function SignupForm() {
     setName("");
     setEmail("");
     setPassword("");
+    if (response.data.token) {
+      alert("User created successfully");
+      navigate("/blogs");
+    }
     localStorage.setItem("token", response.data.token);
   }
 
@@ -27,9 +35,9 @@ function SignupForm() {
         <h1 className="text-3xl font-bold text-center">Create an Account </h1>
         <h2 className="mt-4 text-center text-sm  leading-9 tracking-tight text-gray-900">
           Already have an account?{" "}
-          <a href="#" className="underline leading-6">
+          <Link to={"/signin"} className="underline leading-6">
             Login
-          </a>
+          </Link>
         </h2>
       </div>
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm ">
