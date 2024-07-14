@@ -1,4 +1,5 @@
 import edit from "../assets/edit.svg";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
@@ -10,10 +11,10 @@ function Navbar() {
         />
       </div>
       <div className="flex flex-row justify-between space-x-10">
-        <button className="flex flex-row items-center space-x-1">
+        <Link to={"/write"} className="flex flex-row items-center space-x-1">
           <img className="h-6" src={edit} />
           <span>Write</span>
-        </button>
+        </Link>
         <div>
           <div className="h-12 w-12 rounded-full bg-purple-400 flex justify-center items-center">
             <span className="font-medium">U</span>
