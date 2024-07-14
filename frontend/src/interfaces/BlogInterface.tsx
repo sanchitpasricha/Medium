@@ -6,3 +6,9 @@ export interface Blog {
   author: string;
   authorId: string;
 }
+
+export interface Quote {
+  quote: string;
+  author: string;
+  category: string;
+}
