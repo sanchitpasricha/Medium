@@ -13,13 +13,10 @@ function MainArea() {
       });
   }, []);
   return (
-    <div className="w-full h-screen grid grid-cols-3">
-      <div className="w-50 col-span-2">
-        {blogs.map((blog) => (
-          <BlogPost key={blog.id} blog={blog} />
-        ))}
-      </div>
-      <div className="w-50 "></div>
+    <div className="h-screen px-40 py-16">
+      {blogs.map((blog) => (
+        <BlogPost key={blog.id} blog={blog} />
+      ))}
     </div>
   );
 }

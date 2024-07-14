@@ -1,9 +1,13 @@
+export interface Author {
+  name: string;
+}
+
 export interface Blog {
   id: string;
   title: string;
   content: string;
   published: boolean;
-  author: string;
+  author: Author;
   authorId: string;
 }
 
